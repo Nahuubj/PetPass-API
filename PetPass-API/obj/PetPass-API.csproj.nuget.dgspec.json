@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\repo\\PetPass-API\\PetPass-API\\PetPass-API.csproj": {}
+    "C:\\Repository\\PetPass-API\\PetPass-API\\PetPass-API.csproj": {}
   },
   "projects": {
-    "C:\\repo\\PetPass-API\\PetPass-API\\PetPass-API.csproj": {
+    "C:\\Repository\\PetPass-API\\PetPass-API\\PetPass-API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\repo\\PetPass-API\\PetPass-API\\PetPass-API.csproj",
+        "projectUniqueName": "C:\\Repository\\PetPass-API\\PetPass-API\\PetPass-API.csproj",
         "projectName": "PetPass-API",
-        "projectPath": "C:\\repo\\PetPass-API\\PetPass-API\\PetPass-API.csproj",
-        "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "C:\\repo\\PetPass-API\\PetPass-API\\obj\\",
+        "projectPath": "C:\\Repository\\PetPass-API\\PetPass-API\\PetPass-API.csproj",
+        "packagesPath": "C:\\Users\\Windows\\.nuget\\packages\\",
+        "outputPath": "C:\\Repository\\PetPass-API\\PetPass-API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Windows\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
