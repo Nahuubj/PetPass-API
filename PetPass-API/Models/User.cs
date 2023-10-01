@@ -42,16 +42,21 @@ public partial class User
     [Unicode(false)]
     public string FirstSessionLogin { get; set; } = null!;
 
+    [Column("code_recovery")]
+    [StringLength(50)]
+    [Unicode(false)]
+    public string? CodeRecovery { get; set; }
+
     [InverseProperty("Person")]
-    public virtual ICollection<Patrol>? Patrols { get; set; } = new List<Patrol>();
+    public virtual ICollection<Patrol> Patrols { get; set; } = new List<Patrol>();
 
     [ForeignKey("PersonId")]
     [InverseProperty("User")]
     public virtual Person Person { get; set; } = null!;
 
     [InverseProperty("UserPerson")]
-    public virtual ICollection<PersonRegister>? PersonRegisters { get; set; } = new List<PersonRegister>();
+    public virtual ICollection<PersonRegister> PersonRegisters { get; set; } = new List<PersonRegister>();
 
     [InverseProperty("UserPerson")]
-    public virtual ICollection<PetRegister>? PetRegisters { get; set; } = new List<PetRegister>();
+    public virtual ICollection<PetRegister> PetRegisters { get; set; } = new List<PetRegister>();
 }

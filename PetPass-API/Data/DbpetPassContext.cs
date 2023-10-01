@@ -5,13 +5,13 @@ using PetPass_API.Models;
 
 namespace PetPass_API.Data;
 
-public partial class DbpetPassContext : DbContext
+public partial class DbPetPassContext : DbContext
 {
-    public DbpetPassContext()
+    public DbPetPassContext()
     {
     }
 
-    public DbpetPassContext(DbContextOptions<DbpetPassContext> options)
+    public DbPetPassContext(DbContextOptions<DbPetPassContext> options)
         : base(options)
     {
     }
@@ -38,11 +38,16 @@ public partial class DbpetPassContext : DbContext
 
     public virtual DbSet<Zone> Zones { get; set; }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Campaign>(entity =>
         {
             entity.Property(e => e.CampaignId).ValueGeneratedNever();
+            entity.Property(e => e.State)
+                .HasDefaultValueSql("((1))")
+                .HasComment("0 : Inactive\r\n1: Active");
         });
 
         modelBuilder.Entity<Patrol>(entity =>

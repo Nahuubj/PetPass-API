@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -15,14 +16,15 @@ namespace PetPass_API.Controllers
     [ApiController]
     public class PeopleController : ControllerBase
     {
-        private readonly DbpetPassContext _context;
+        private readonly DbPetPassContext _context;
 
-        public PeopleController(DbpetPassContext context) 
+        public PeopleController(DbPetPassContext context) 
         {
             _context = context;
         }
 
         // GET: People
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -30,6 +32,7 @@ namespace PetPass_API.Controllers
         }
 
         // GET: People/Details/5
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> Details(int? id)
         {
@@ -48,7 +51,31 @@ namespace PetPass_API.Controllers
             return Ok(person);
         }
 
+        /*
+        [Authorize]
+        [HttpGet]
+        [Route("Findbyid")]
+        public async Task<IActionResult> Findbyid(string? ci)
+        {
+            if (ci == null || _context.People == null)
+            {
+                return NotFound();
+            }
+
+            var person = await _context.People
+                .FirstOrDefaultAsync(m => m.Ci == ci);
+            if (person == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(person);
+        }
+        */
+
+
         // POST: api/People
+        [Authorize]
         [HttpPost]
         [Route("CreateBrigadier")]
         public async Task<ActionResult<Person>> CreateBrigadier(Person person)
@@ -83,6 +110,7 @@ namespace PetPass_API.Controllers
             return BadRequest();
         }
 
+        [Authorize]
         [HttpPost]
         [Route("CreateOwner")]
         public async Task<ActionResult<Person>> CreateOwner(Person person)
@@ -119,6 +147,7 @@ namespace PetPass_API.Controllers
 
         // PUT: api/People/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPut]
         [Route("UpdatePerson")]
         public async Task<IActionResult> PutPerson(Person person)
@@ -145,6 +174,7 @@ namespace PetPass_API.Controllers
         }
 
         // POST: People/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [Route("DeletePerson")]
         public async Task<IActionResult> DeletePerson(int id)

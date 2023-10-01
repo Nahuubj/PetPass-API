@@ -12,9 +12,9 @@ namespace PetPass_API.Controllers
     [ApiController]    
     public class PetsController : ControllerBase
     {
-        private readonly DbpetPassContext _context;
+        private readonly DbPetPassContext _context;
 
-        public PetsController(DbpetPassContext context) 
+        public PetsController(DbPetPassContext context) 
         {
             _context = context;
         }

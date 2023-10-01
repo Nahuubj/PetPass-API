@@ -21,6 +21,13 @@ public partial class Campaign
     [Column("campaignDate", TypeName = "date")]
     public DateTime CampaignDate { get; set; }
 
+    /// <summary>
+    /// 0 : Inactive
+    /// 1: Active
+    /// </summary>
+    [Column("state")]
+    public byte State { get; set; }
+
     [InverseProperty("Campaign")]
     public virtual ICollection<Patrol> Patrols { get; set; } = new List<Patrol>();
 

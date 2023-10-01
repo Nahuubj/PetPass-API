@@ -12,9 +12,9 @@ namespace PetPass_API.Controllers
 {
     public class CampaignsController : Controller
     {
-        private readonly DbpetPassContext _context;
+        private readonly DbPetPassContext _context;
 
-        public CampaignsController(DbpetPassContext context)
+        public CampaignsController(DbPetPassContext context)
         {
             _context = context;
         }
