@@ -2,8 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using PetPass_API.Data;
 using PetPass_API.Models;
+using PetPass_API.Services;
+using QRCoder;
 using System;
 using System.Drawing;
+using System.Net.Mail;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace PetPass_API.Controllers
 {
@@ -56,13 +60,22 @@ namespace PetPass_API.Controllers
                 {
                     try
                     {
-                        await _context.Pets.AddAsync(pet);
-                        await _context.SaveChangesAsync();
-                        //MANEJAR SESIONES, PARA RELLENAR PERSON_REGISTER
-                        await transaction.CommitAsync();
-                        return CreatedAtAction("Details", new { id = pet.PetId }, pet);
+                        var person = await _context.People
+                            .FirstOrDefaultAsync(p => p.PersonId == pet.PersonId);
+                        if (person == null)
+                        {
+                            return NotFound();
+                        }
 
-                        //FALTA IMPLEMENTAR QR
+                            await _context.Pets.AddAsync(pet);
+                        await _context.SaveChangesAsync();
+                        //RELLENAR PERSON_REGISTER   ////Futuro
+                        await transaction.CommitAsync();
+
+                        QRCodeService qRCodeService = new QRCodeService();
+                        qRCodeService.GenerateAndSendQRCode(pet.PetId, person.Email);
+                        return CreatedAtAction("Details", new { id = pet.PetId }, pet);
+                        
                     }
                     catch
                     {
@@ -119,9 +132,51 @@ namespace PetPass_API.Controllers
             return NoContent();
         }
 
+        [HttpGet]
+        [Route("GetPetQR")]
+        public async Task<IActionResult> GetPetQR(int? id)
+        {
+            if (id == null || _context.Pets == null)
+            {
+                return NotFound();
+            }
+
+            var pet = await _context.Pets
+                .FirstOrDefaultAsync(p => p.PetId == id);
+            if (pet == null)
+            {
+                return NotFound();
+            }
+
+            var person = await _context.People
+                .FirstOrDefaultAsync(p => p.PersonId == pet.PersonId);
+
+            if (person == null)
+            {
+                return NotFound();
+            }
+
+            string OwnerName = person.Name + " " + person.FirstName;
+
+            DTOPet dtoPet = new DTOPet
+            {
+                petId = pet.PetId,
+                ownerName = OwnerName,
+                ci = person.Ci,
+                petName = pet.Name,
+                specie = pet.Specie,
+                breed = pet.Breed,
+                gender = pet.Gender,
+                description = pet.SpecialFeature
+            };
+
+            return Ok(dtoPet);
+        }
+
         private bool PetExists(int id)
         {
             return _context.Pets.Any(e => e.PetId == id);
         }
+
     }
 }

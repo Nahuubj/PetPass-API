@@ -57,11 +57,11 @@ public partial class Pet
 
     [ForeignKey("PersonId")]
     [InverseProperty("Pets")]
-    public virtual Person Person { get; set; } = null!;
+    public virtual Person? Person { get; set; } = null!;
 
     [InverseProperty("Pet")]
-    public virtual ICollection<PetRegister> PetRegisters { get; set; } = new List<PetRegister>();
+    public virtual ICollection<PetRegister>? PetRegisters { get; set; } = new List<PetRegister>();
 
     [InverseProperty("Pet")]
-    public virtual ICollection<PetVaccine> PetVaccines { get; set; } = new List<PetVaccine>();
+    public virtual ICollection<PetVaccine>? PetVaccines { get; set; } = new List<PetVaccine>();
 }

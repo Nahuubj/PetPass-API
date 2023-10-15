@@ -6,6 +6,9 @@ using PetPass_API.Models;
 using PetPass_API.Models.Custom;
 using PetPass_API.Services;
 using System.Net.Mail;
+using System.Linq;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Microsoft.IdentityModel.Tokens;
 
 namespace PetPass_API.Controllers
 {
@@ -37,7 +40,7 @@ namespace PetPass_API.Controllers
         [Authorize]
         [HttpPut]
         [Route("firstPassword")]
-        public async Task<IActionResult> firstPassword(int userID, string newPassword)
+        public async Task<IActionResult> firstPassword(int? userID, string newPassword)
         {
             if (userID == null || _context.People == null)
             {
@@ -111,6 +114,7 @@ namespace PetPass_API.Controllers
         [Route("FindByEmail")]
         public async Task<IActionResult> FindByEmail(string? email)
         {
+            
             if (email == null || _context.People == null)
             {
                 return NotFound();
@@ -137,7 +141,8 @@ namespace PetPass_API.Controllers
 
                 user.CodeRecovery = code;
                 _context.Entry(user).State = EntityState.Modified;
-            }
+            }    
+
             try
             {
                 await _context.SaveChangesAsync();
@@ -150,7 +155,8 @@ namespace PetPass_API.Controllers
 
             return Ok(user.PersonId);
         }
-
+        
+        #region Code Recovery Methods
         [ApiExplorerSettings(IgnoreApi = true)]
         private string GenerateCodeRecovery()
         {
@@ -160,10 +166,10 @@ namespace PetPass_API.Controllers
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
-        public void SendEmail(string EmailDestiny, string codeRecovery)
+        private void SendEmail(string EmailDestiny, string codeRecovery)
         {
             string EmailOrigin = "nahuel.gutierrez.vargas17@gmail.com";
-            string password = "bdzqnmwcnemhbqub\r\n";
+            string password = "pbek lzxr uxvd byux\r\n";
 
             MailMessage mailMessage = new MailMessage(EmailOrigin, EmailDestiny, "Solicitud de Cambio de Contraseña",
                 "<p>Este es tu codigo de recuperacion: </p><br />" +
@@ -179,6 +185,9 @@ namespace PetPass_API.Controllers
             smtpClient.Send(mailMessage);
             smtpClient.Dispose();
         }
+        #endregion
+
+        
     }
 }
 

@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using Amazon.S3;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PetPass_API.Data;
 using PetPass_API.Models;
+using PetPass_API.Models.Custom;
 
 namespace PetPass_API.Controllers
 {
@@ -18,9 +20,11 @@ namespace PetPass_API.Controllers
     {
         private readonly DbPetPassContext _context;
 
-        public PeopleController(DbPetPassContext context) 
+        public PeopleController(DbPetPassContext context)
+
         {
             _context = context;
+
         }
 
         // GET: People
@@ -51,30 +55,7 @@ namespace PetPass_API.Controllers
             return Ok(person);
         }
 
-        /*
-        [Authorize]
-        [HttpGet]
-        [Route("Findbyid")]
-        public async Task<IActionResult> Findbyid(string? ci)
-        {
-            if (ci == null || _context.People == null)
-            {
-                return NotFound();
-            }
-
-            var person = await _context.People
-                .FirstOrDefaultAsync(m => m.Ci == ci);
-            if (person == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(person);
-        }
-        */
-
-
-        // POST: api/People
+    // POST: api/People
         [Authorize]
         [HttpPost]
         [Route("CreateBrigadier")]
@@ -109,6 +90,11 @@ namespace PetPass_API.Controllers
             }
             return BadRequest();
         }
+
+        //public async Task<IActionResult> UploadFile(UploadImage brigadierFile)
+        //{
+
+        //}
 
         [Authorize]
         [HttpPost]
@@ -240,7 +226,7 @@ namespace PetPass_API.Controllers
         public void SendEmail(string EmailDestiny, string userName, string userPassword)
         {
             string EmailOrigin = "nahuel.gutierrez.vargas17@gmail.com";
-            string password = "bdzqnmwcnemhbqub\r\n";
+            string password = "pbek lzxr uxvd byux\r\n";
 
             MailMessage mailMessage = new MailMessage(EmailOrigin, EmailDestiny, "Bienvenido a PetPass!",
                 "<p>Nombre de Usuario: </p><br />" + 

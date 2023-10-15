@@ -1,9 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "oOianDNSytoW7Vrds5T2Tx/kGmUR1Wcz4pXdnk1mG04sR7vYNUsAXpwiG3xeJvuvlxxkLU/gkn5gQMT3OOGsyA==",
+  "dgSpecHash": "/xr3lWUluCfiX5pAzyyXJoH3UiBK5YkzzzpJ951k2iTzSAURYiBYXekkuyBnilLXIaZzYk/vOoBCw/+uVkayjw==",
   "success": true,
   "projectFilePath": "C:\\RepositoryLocal\\PetPass-API\\PetPass-API\\PetPass-API.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Windows\\.nuget\\packages\\awssdk.core\\3.7.204.1\\awssdk.core.3.7.204.1.nupkg.sha512",
+    "C:\\Users\\Windows\\.nuget\\packages\\awssdk.extensions.netcore.setup\\3.7.7\\awssdk.extensions.netcore.setup.3.7.7.nupkg.sha512",
+    "C:\\Users\\Windows\\.nuget\\packages\\awssdk.s3\\3.7.205.10\\awssdk.s3.3.7.205.10.nupkg.sha512",
     "C:\\Users\\Windows\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\Windows\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
     "C:\\Users\\Windows\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
@@ -130,6 +133,7 @@
     "C:\\Users\\Windows\\.nuget\\packages\\nuget.projectmodel\\6.6.1\\nuget.projectmodel.6.6.1.nupkg.sha512",
     "C:\\Users\\Windows\\.nuget\\packages\\nuget.protocol\\6.6.1\\nuget.protocol.6.6.1.nupkg.sha512",
     "C:\\Users\\Windows\\.nuget\\packages\\nuget.versioning\\6.6.1\\nuget.versioning.6.6.1.nupkg.sha512",
+    "C:\\Users\\Windows\\.nuget\\packages\\qrcoder\\1.4.3\\qrcoder.1.4.3.nupkg.sha512",
     "C:\\Users\\Windows\\.nuget\\packages\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\Windows\\.nuget\\packages\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\Windows\\.nuget\\packages\\runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
