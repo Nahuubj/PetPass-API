@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using PetPass_API.Data;
 using PetPass_API.Models;
 using PetPass_API.Models.Custom;
+using PetPass_API.Services;
 
 namespace PetPass_API.Controllers
 {
@@ -91,15 +92,10 @@ namespace PetPass_API.Controllers
             return BadRequest();
         }
 
-        //public async Task<IActionResult> UploadFile(UploadImage brigadierFile)
-        //{
-
-        //}
-
         [Authorize]
         [HttpPost]
         [Route("CreateOwner")]
-        public async Task<ActionResult<Person>> CreateOwner(Person person)
+        public async Task<ActionResult<Person>> CreateOwner(Person person, int userId)
         {
             if (person != null)
             {
@@ -117,8 +113,9 @@ namespace PetPass_API.Controllers
                         user.Rol = "O";
                         await _context.Users.AddAsync(user);
                         await _context.SaveChangesAsync();
-                        //MANEJAR SESIONES, PARA RELLENAR PERSON_REGISTER
                         await transaction.CommitAsync();
+                        PersonRegisterService personRegister = new PersonRegisterService(_context);
+                        personRegister.RegisterPersonRegister(person.PersonId, userId);
                         SendEmail(person.Email, user.Username, user.Userpassword);
                         return CreatedAtAction("Details", new { id = person.PersonId }, person);
                     }

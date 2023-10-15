@@ -29,8 +29,8 @@ public partial class Campaign
     public byte State { get; set; }
 
     [InverseProperty("Campaign")]
-    public virtual ICollection<Patrol> Patrols { get; set; } = new List<Patrol>();
+    public virtual ICollection<Patrol>? Patrols { get; set; } = new List<Patrol>();
 
     [InverseProperty("Campaign")]
-    public virtual ICollection<PetVaccine> PetVaccines { get; set; } = new List<PetVaccine>();
+    public virtual ICollection<PetVaccine>? PetVaccines { get; set; } = new List<PetVaccine>();
 }

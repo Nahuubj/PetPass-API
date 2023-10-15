@@ -27,13 +27,13 @@ public partial class Patrol
 
     [ForeignKey("CampaignId")]
     [InverseProperty("Patrols")]
-    public virtual Campaign Campaign { get; set; } = null!;
+    public virtual Campaign? Campaign { get; set; } = null!;
 
     [ForeignKey("PersonId")]
     [InverseProperty("Patrols")]
-    public virtual User Person { get; set; } = null!;
+    public virtual User? Person { get; set; } = null!;
 
     [ForeignKey("ZoneId")]
     [InverseProperty("Patrols")]
-    public virtual Zone Zone { get; set; } = null!;
+    public virtual Zone? Zone { get; set; } = null!;
 }

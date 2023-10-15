@@ -19,5 +19,5 @@ public partial class Zone
     public string Name { get; set; } = null!;
 
     [InverseProperty("Zone")]
-    public virtual ICollection<Patrol> Patrols { get; set; } = new List<Patrol>();
+    public virtual ICollection<Patrol>? Patrols { get; set; } = new List<Patrol>();
 }

@@ -23,7 +23,6 @@ namespace PetPass_API.Controllers
             _context = context;
         }
 
-
         // GET: Pets
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -46,13 +45,12 @@ namespace PetPass_API.Controllers
             {
                 return NotFound();
             }
-
             return Ok(pet);
         }
 
         [HttpPost]
         [Route("CreatePet")]
-        public async Task<ActionResult<Pet>> CreatePet(Pet pet)
+        public async Task<ActionResult<Pet>> CreatePet(Pet pet, int userId)
         {
             if (pet != null)
             {
@@ -67,15 +65,16 @@ namespace PetPass_API.Controllers
                             return NotFound();
                         }
 
-                            await _context.Pets.AddAsync(pet);
+                        await _context.Pets.AddAsync(pet);
                         await _context.SaveChangesAsync();
-                        //RELLENAR PERSON_REGISTER   ////Futuro
                         await transaction.CommitAsync();
+
+                        PetRegisterService petRegister = new PetRegisterService(_context);
+                        petRegister.RegisterPet(pet.PetId, userId);
 
                         QRCodeService qRCodeService = new QRCodeService();
                         qRCodeService.GenerateAndSendQRCode(pet.PetId, person.Email);
                         return CreatedAtAction("Details", new { id = pet.PetId }, pet);
-                        
                     }
                     catch
                     {
@@ -108,7 +107,6 @@ namespace PetPass_API.Controllers
             {
                 return BadRequest();
             }
-
             return NoContent();
         }
 
@@ -127,7 +125,6 @@ namespace PetPass_API.Controllers
                 pet.State = 0;
                 _context.Entry(pet).State = EntityState.Modified;
             }
-
             await _context.SaveChangesAsync();
             return NoContent();
         }
@@ -169,7 +166,6 @@ namespace PetPass_API.Controllers
                 gender = pet.Gender,
                 description = pet.SpecialFeature
             };
-
             return Ok(dtoPet);
         }
 
