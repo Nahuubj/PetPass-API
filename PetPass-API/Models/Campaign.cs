@@ -18,19 +18,19 @@ public partial class Campaign
     [Unicode(false)]
     public string Name { get; set; } = null!;
 
-    [Column("campaignDate", TypeName = "date")]
-    public DateTime CampaignDate { get; set; }
+    [Column(TypeName = "date")]
+    public DateTime StartDate { get; set; }
+
+    [Column(TypeName = "date")]
+    public DateTime EndDate { get; set; }
 
     /// <summary>
     /// 0 : Inactive
     /// 1: Active
     /// </summary>
     [Column("state")]
-    public byte State { get; set; }
+    public bool? State { get; set; }
 
     [InverseProperty("Campaign")]
     public virtual ICollection<Patrol>? Patrols { get; set; } = new List<Patrol>();
-
-    [InverseProperty("Campaign")]
-    public virtual ICollection<PetVaccine>? PetVaccines { get; set; } = new List<PetVaccine>();
 }

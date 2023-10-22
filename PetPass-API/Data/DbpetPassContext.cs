@@ -32,21 +32,19 @@ public partial class DbPetPassContext : DbContext
 
     public virtual DbSet<PetRegister> PetRegisters { get; set; }
 
-    public virtual DbSet<PetVaccine> PetVaccines { get; set; }
-
     public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<Zone> Zones { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        => optionsBuilder.UseSqlServer();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Campaign>(entity =>
         {
-            entity.Property(e => e.CampaignId).ValueGeneratedNever();
             entity.Property(e => e.State)
-                .HasDefaultValueSql("((1))")
+                .HasComputedColumnSql("(case when [EndDate]<getdate() then CONVERT([bit],(0)) else CONVERT([bit],(1)) end)", false)
                 .HasComment("0 : Inactive\r\n1: Active");
         });
 
@@ -115,17 +113,6 @@ public partial class DbPetPassContext : DbContext
             entity.HasOne(d => d.UserPerson).WithMany(p => p.PetRegisters)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Pet_Register_User");
-        });
-
-        modelBuilder.Entity<PetVaccine>(entity =>
-        {
-            entity.HasOne(d => d.Campaign).WithMany(p => p.PetVaccines)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PetVaccine_Campaign");
-
-            entity.HasOne(d => d.Pet).WithMany(p => p.PetVaccines)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PetVaccine_Pet");
         });
 
         modelBuilder.Entity<User>(entity =>

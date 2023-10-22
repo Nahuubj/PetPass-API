@@ -63,10 +63,10 @@ public partial class Person
     public short State { get; set; }
 
     [InverseProperty("Person")]
-    public virtual ICollection<PersonRegister> PersonRegisters { get; set; } = new List<PersonRegister>();
+    public virtual ICollection<PersonRegister>? PersonRegisters { get; set; } = new List<PersonRegister>();
 
     [InverseProperty("Person")]
-    public virtual ICollection<Pet> Pets { get; set; } = new List<Pet>();
+    public virtual ICollection<Pet>? Pets { get; set; } = new List<Pet>();
 
     [InverseProperty("Person")]
     public virtual User? User { get; set; }

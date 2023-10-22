@@ -169,10 +169,28 @@ namespace PetPass_API.Controllers
             return Ok(dtoPet);
         }
 
+
+
         private bool PetExists(int id)
         {
             return _context.Pets.Any(e => e.PetId == id);
         }
 
+
+        [HttpGet]
+        [Route("FindByCI")]
+        public async Task<IActionResult> FindByCI(string? ci)
+        {
+
+            if (ci == null || _context.People == null)
+            {
+                return NotFound();
+            }
+
+            var person = await _context.People
+                .FirstOrDefaultAsync(m => m.Ci == ci);
+
+            return Ok(person);
+        }
     }
 }

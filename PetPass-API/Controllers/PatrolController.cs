@@ -44,7 +44,7 @@ namespace PetPass_API.Controllers
 
         [HttpPost]
         [Route("CreatePatrol")]
-        public async Task<ActionResult<Pet>> CreatePet(Patrol patrol)
+        public async Task<ActionResult<Pet>> CreatePet([FromBody]Patrol patrol)
         {
             if (patrol != null)
             {
@@ -66,6 +66,13 @@ namespace PetPass_API.Controllers
                 }
             }
             return BadRequest();
+        }
+
+        [HttpGet]
+        [Route("GetZones")]
+        public async Task<IActionResult> GetZones()
+        {
+            return Ok(await _context.Zones.ToListAsync());
         }
     }
 }

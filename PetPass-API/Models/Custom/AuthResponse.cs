@@ -2,8 +2,8 @@
 {
     public class AuthResponse
     {
+        public int userID {  get; set; }
         public string Token { get; set; }
-        public bool Result { get; set; }
-        public string Msg { get; set; }
+        public bool FirstLogin { get; set; }
     }
 }

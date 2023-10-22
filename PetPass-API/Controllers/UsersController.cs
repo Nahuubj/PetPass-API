@@ -9,6 +9,7 @@ using System.Net.Mail;
 using System.Linq;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Cryptography;
 
 namespace PetPass_API.Controllers
 {
@@ -27,16 +28,16 @@ namespace PetPass_API.Controllers
 
         [HttpPost]
         [Route("Login")]
-        public async Task<IActionResult> Login(string username, string password)
+        public async Task<IActionResult> Login([FromBody] UserRequest request)
         {
-            var resultAuth = await _authService.TokenReturnLogin(username, password);
+
+            var resultAuth = await _authService.TokenReturnLogin(request);
             if(resultAuth == null)
                 return Unauthorized();
 
             return Ok(resultAuth);
         }
 
-        //login(manejo de sesiones), cambiar contraseña, primer inicio sesion
         [Authorize]
         [HttpPut]
         [Route("firstPassword")]
@@ -58,7 +59,7 @@ namespace PetPass_API.Controllers
             else
             {
                 user.Userpassword = newPassword;
-                user.FirstSessionLogin = Char.ToString(('0'));
+                user.FirstSessionLogin = Char.ToString('0');
                 _context.Entry(user).State = EntityState.Modified;
             }
             try
@@ -186,8 +187,6 @@ namespace PetPass_API.Controllers
             smtpClient.Dispose();
         }
         #endregion
-
-        
     }
 }
 

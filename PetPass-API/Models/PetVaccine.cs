@@ -34,9 +34,9 @@ public partial class PetVaccine
 
     [ForeignKey("CampaignId")]
     [InverseProperty("PetVaccines")]
-    public virtual Campaign Campaign { get; set; } = null!;
+    public virtual Campaign? Campaign { get; set; } = null!;
 
     [ForeignKey("PetId")]
     [InverseProperty("PetVaccines")]
-    public virtual Pet Pet { get; set; } = null!;
+    public virtual Pet? Pet { get; set; } = null!;
 }

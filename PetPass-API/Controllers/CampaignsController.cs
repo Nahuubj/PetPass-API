@@ -12,6 +12,8 @@ using PetPass_API.Services;
 
 namespace PetPass_API.Controllers
 {
+    [Route("PetPass/[controller]")]
+    [ApiController]
     public class CampaignsController : Controller
     {
         private readonly DbPetPassContext _context;
@@ -21,14 +23,16 @@ namespace PetPass_API.Controllers
             _context = context;
         }
 
+        [HttpGet]
         // GET: Campaigns
         public async Task<IActionResult> Index()
         {
               return _context.Campaigns != null ? 
-                          View(await _context.Campaigns.ToListAsync()) :
+                          Ok(await _context.Campaigns.ToListAsync()) :
                           Problem("Entity set 'DbpetPassContext.Campaigns'  is null.");
         }
 
+        [HttpGet("{id}")]
         // GET: Campaigns/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -44,10 +48,11 @@ namespace PetPass_API.Controllers
                 return NotFound();
             }
 
-            return View(campaign);
+            return Ok(campaign);
         }
 
         [HttpPost]
+        [Route("Create")]
         public async Task<IActionResult> Create(Campaign campaign)
         {
             try

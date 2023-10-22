@@ -22,10 +22,10 @@ namespace PetPass_API.Services
             _config = config;
         }
 
-        public async Task<AuthResponse> TokenReturnLogin(string username, string password)
+        public async Task<AuthResponse> TokenReturnLogin(UserRequest userRequest)
         {
             var userFinded = _context.Users.FirstOrDefault(x =>
-            x.Username == username && x.Userpassword == password);
+            x.Username == userRequest.Username && x.Userpassword == userRequest.Userpassword);
 
             if (userFinded == null)
             {
@@ -34,9 +34,9 @@ namespace PetPass_API.Services
 
             string token = GenerateToken(userFinded.PersonId.ToString());
 
-            bool valid = IsFirstLogin(username, password);
+            bool valid = IsFirstLogin(userFinded.Username, userFinded.Userpassword);
 
-            return new AuthResponse() { Token = token, Result = valid, Msg="Ok" };
+            return new AuthResponse() { userID = userFinded.PersonId ,Token = token, FirstLogin = valid };
         }
 
         private string GenerateToken(string idUser)
