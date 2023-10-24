@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,7 @@ namespace PetPass_API.Controllers
             _context = context;
         }
 
+        [Authorize]
         [HttpGet]
         // GET: Campaigns
         public async Task<IActionResult> Index()
@@ -32,6 +34,7 @@ namespace PetPass_API.Controllers
                           Problem("Entity set 'DbpetPassContext.Campaigns'  is null.");
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         // GET: Campaigns/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -51,9 +54,10 @@ namespace PetPass_API.Controllers
             return Ok(campaign);
         }
 
+        [Authorize]
         [HttpPost]
         [Route("Create")]
-        public async Task<IActionResult> Create(Campaign campaign)
+        public async Task<IActionResult> Create([FromBody] Campaign campaign)
         {
             try
             {

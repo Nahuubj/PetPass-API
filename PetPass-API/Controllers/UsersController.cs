@@ -38,18 +38,19 @@ namespace PetPass_API.Controllers
             return Ok(resultAuth);
         }
 
+        /*Necesitas crearte un modelo desde la aplicacion para poder enviar*/
         [Authorize]
         [HttpPut]
         [Route("firstPassword")]
-        public async Task<IActionResult> firstPassword(int? userID, string newPassword)
+        public async Task<IActionResult> firstPassword([FromBody] FirstLoginUser fUser)
         {
-            if (userID == null || _context.People == null)
+            if (fUser == null || _context.People == null)
             {
                 return NotFound();
             }
 
             var user = await _context.Users
-                .FirstOrDefaultAsync(m => m.PersonId == userID);
+                .FirstOrDefaultAsync(m => m.PersonId == fUser.userID);
 
 
             if (user == null)
@@ -58,7 +59,7 @@ namespace PetPass_API.Controllers
             }
             else
             {
-                user.Userpassword = newPassword;
+                user.Userpassword = fUser.newPassword;
                 user.FirstSessionLogin = Char.ToString('0');
                 _context.Entry(user).State = EntityState.Modified;
             }
@@ -75,6 +76,7 @@ namespace PetPass_API.Controllers
             return Ok();
         }
 
+        #region DIEGO RICALDEZ METHODS
         [HttpPut]
         [Route("RecoveryPassword")]
         public async Task<IActionResult> RecoveryPassword(int userID, string codeRecovery, string newPassword)
@@ -156,7 +158,9 @@ namespace PetPass_API.Controllers
 
             return Ok(user.PersonId);
         }
-        
+
+        #endregion
+
         #region Code Recovery Methods
         [ApiExplorerSettings(IgnoreApi = true)]
         private string GenerateCodeRecovery()

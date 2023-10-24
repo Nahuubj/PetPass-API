@@ -36,7 +36,7 @@ namespace PetPass_API.Services
 
             bool valid = IsFirstLogin(userFinded.Username, userFinded.Userpassword);
 
-            return new AuthResponse() { userID = userFinded.PersonId ,Token = token, FirstLogin = valid };
+            return new AuthResponse() { userID = userFinded.PersonId ,Token = token, FirstLogin = valid, Role = Char.Parse(userFinded.Rol.ToString()) };
         }
 
         private string GenerateToken(string idUser)

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PetPass_API.Data;
 using PetPass_API.Models;
@@ -24,6 +25,7 @@ namespace PetPass_API.Controllers
         }
 
         // GET: Pets
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -31,6 +33,7 @@ namespace PetPass_API.Controllers
         }
 
         // GET: Pets/Details/5
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> Details(int? id)
         {
@@ -48,9 +51,10 @@ namespace PetPass_API.Controllers
             return Ok(pet);
         }
 
+        [Authorize]
         [HttpPost]
         [Route("CreatePet")]
-        public async Task<ActionResult<Pet>> CreatePet(Pet pet, int userId)
+        public async Task<ActionResult<Pet>> CreatePet(PetCreated pet)
         {
             if (pet != null)
             {
@@ -65,12 +69,12 @@ namespace PetPass_API.Controllers
                             return NotFound();
                         }
 
-                        await _context.Pets.AddAsync(pet);
+                        await _context.Pets.AddAsync((Pet)pet);
                         await _context.SaveChangesAsync();
                         await transaction.CommitAsync();
 
                         PetRegisterService petRegister = new PetRegisterService(_context);
-                        petRegister.RegisterPet(pet.PetId, userId);
+                        petRegister.RegisterPet(pet.PetId, pet.UserId);
 
                         QRCodeService qRCodeService = new QRCodeService();
                         qRCodeService.GenerateAndSendQRCode(pet.PetId, person.Email);
@@ -87,6 +91,7 @@ namespace PetPass_API.Controllers
 
         // PUT: api/People/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPet(Pet pet)
         {
@@ -111,6 +116,7 @@ namespace PetPass_API.Controllers
         }
 
         // POST: Pets/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [Route("DeletePet")]
         public async Task<IActionResult> DeletePet(int id)
@@ -169,28 +175,9 @@ namespace PetPass_API.Controllers
             return Ok(dtoPet);
         }
 
-
-
         private bool PetExists(int id)
         {
             return _context.Pets.Any(e => e.PetId == id);
-        }
-
-
-        [HttpGet]
-        [Route("FindByCI")]
-        public async Task<IActionResult> FindByCI(string? ci)
-        {
-
-            if (ci == null || _context.People == null)
-            {
-                return NotFound();
-            }
-
-            var person = await _context.People
-                .FirstOrDefaultAsync(m => m.Ci == ci);
-
-            return Ok(person);
         }
     }
 }

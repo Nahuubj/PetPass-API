@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PetPass_API.Data;
 using PetPass_API.Models;
@@ -18,12 +19,14 @@ namespace PetPass_API.Controllers
             _context = context;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             return Ok(await _context.Patrols.ToListAsync());
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> Details(int? id)
         {
@@ -42,6 +45,7 @@ namespace PetPass_API.Controllers
             return Ok(patrol);
         }
 
+        [Authorize]
         [HttpPost]
         [Route("CreatePatrol")]
         public async Task<ActionResult<Pet>> CreatePet([FromBody]Patrol patrol)
@@ -68,6 +72,7 @@ namespace PetPass_API.Controllers
             return BadRequest();
         }
 
+        [Authorize]
         [HttpGet]
         [Route("GetZones")]
         public async Task<IActionResult> GetZones()

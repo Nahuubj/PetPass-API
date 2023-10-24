@@ -61,4 +61,17 @@ public partial class Pet
 
     [InverseProperty("Pet")]
     public virtual ICollection<PetRegister>? PetRegisters { get; set; } = new List<PetRegister>();
+
+    public Pet(int petId, string name, string specie, string breed, string gender, DateTime birthDate, string specialFeature, short state, int personId)
+    {
+        PetId = petId;
+        Name = name;
+        Specie = specie;
+        Breed = breed;
+        Gender = gender;
+        BirthDate = birthDate;
+        SpecialFeature = specialFeature;
+        State = state;
+        PersonId = personId;
+    }
 }
