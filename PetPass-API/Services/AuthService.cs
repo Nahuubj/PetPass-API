@@ -32,12 +32,24 @@ namespace PetPass_API.Services
                 return await Task.FromResult<AuthResponse>(null);
             }
 
+            string photo = null; // Inicializa 'photo' como null por defecto
+
+            if (userFinded.Rol == "B")
+            {
+                // Obtén la ruta de la imagen desde la base de datos
+                photo = _context.ConfigUsers
+                    .Where(x => x.PersonId == userFinded.PersonId)
+                    .Select(x => x.PathImages)
+                    .FirstOrDefault();
+            }
+
             string token = GenerateToken(userFinded.PersonId.ToString());
 
             bool valid = IsFirstLogin(userFinded.Username, userFinded.Userpassword);
 
-            return new AuthResponse() { userID = userFinded.PersonId ,Token = token, FirstLogin = valid, Role = Char.Parse(userFinded.Rol.ToString()) };
+            return new AuthResponse() { userID = userFinded.PersonId ,Token = token, FirstLogin = valid, Role = Char.Parse(userFinded.Rol.ToString()), Photo = photo};
         }
+
 
         private string GenerateToken(string idUser)
         {

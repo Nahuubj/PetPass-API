@@ -1283,3 +1283,12 @@ C:\RepositoryLocal\PetPass-API\PetPass-API\obj\Debug\net7.0\refint\PetPass-API.d
 C:\RepositoryLocal\PetPass-API\PetPass-API\obj\Debug\net7.0\PetPass-API.pdb
 C:\RepositoryLocal\PetPass-API\PetPass-API\obj\Debug\net7.0\PetPass-API.genruntimeconfig.cache
 C:\RepositoryLocal\PetPass-API\PetPass-API\obj\Debug\net7.0\ref\PetPass-API.dll
+C:\RepositoryLocal\PetPass-API\PetPass-API\bin\Debug\net7.0\FirebaseAdmin.dll
+C:\RepositoryLocal\PetPass-API\PetPass-API\bin\Debug\net7.0\Firebase.Auth.dll
+C:\RepositoryLocal\PetPass-API\PetPass-API\bin\Debug\net7.0\Firebase.Storage.dll
+C:\RepositoryLocal\PetPass-API\PetPass-API\bin\Debug\net7.0\Google.Api.Gax.dll
+C:\RepositoryLocal\PetPass-API\PetPass-API\bin\Debug\net7.0\Google.Api.Gax.Rest.dll
+C:\RepositoryLocal\PetPass-API\PetPass-API\bin\Debug\net7.0\Google.Apis.dll
+C:\RepositoryLocal\PetPass-API\PetPass-API\bin\Debug\net7.0\Google.Apis.Auth.PlatformServices.dll
+C:\RepositoryLocal\PetPass-API\PetPass-API\bin\Debug\net7.0\Google.Apis.Auth.dll
+C:\RepositoryLocal\PetPass-API\PetPass-API\bin\Debug\net7.0\Google.Apis.Core.dll

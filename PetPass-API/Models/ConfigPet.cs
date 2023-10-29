@@ -6,12 +6,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PetPass_API.Models;
 
-[Keyless]
 [Table("Config_Pet")]
 public partial class ConfigPet
 {
+    [Key]
+    [Column("petImageID")]
+    public int PetImageId { get; set; }
+
     [Column("pathImages")]
-    [StringLength(300)]
     [Unicode(false)]
     public string PathImages { get; set; } = null!;
+
+    [Column("petID")]
+    public int PetId { get; set; }
+
+    [ForeignKey("PetId")]
+    [InverseProperty("ConfigPets")]
+    public virtual Pet? Pet { get; set; } = null!;
 }

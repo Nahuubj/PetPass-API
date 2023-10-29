@@ -10,6 +10,7 @@ using System.Linq;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace PetPass_API.Controllers
 {
@@ -28,6 +29,7 @@ namespace PetPass_API.Controllers
 
         [HttpPost]
         [Route("Login")]
+        // A PARTIR DEL 29 10 2023 DEBE ENVIAR CONTRASEÑA CIFRADA
         public async Task<IActionResult> Login([FromBody] UserRequest request)
         {
 
@@ -38,7 +40,8 @@ namespace PetPass_API.Controllers
             return Ok(resultAuth);
         }
 
-        /*Necesitas crearte un modelo desde la aplicacion para poder enviar*/
+        /*Necesitas crearte un modelo desde la aplicacion para poder enviar,
+          DEBE SER CON CONTRASEÑA YA CIFRADA A PARTIR DEL 29 10 2023 */
         [Authorize]
         [HttpPut]
         [Route("firstPassword")]
@@ -79,15 +82,17 @@ namespace PetPass_API.Controllers
         #region DIEGO RICALDEZ METHODS
         [HttpPut]
         [Route("RecoveryPassword")]
-        public async Task<IActionResult> RecoveryPassword(int userID, string codeRecovery, string newPassword)
+        /* NECESITAS CREARTE UN MODELO QUE ENVIE LOS PARAMETROS HABLADOS ANTERIORMENTE,
+           SI NECESITAS VER CUALES SON CLICK DERECHO IR A DEFINICION CIFRADOS CONTRASEÑA Y CODIGO*/
+        public async Task<IActionResult> RecoveryPassword([FromBody] AuthRecoveryPassword recoveryPassword)
         {
-            if (userID == null || _context.People == null)
+            if (recoveryPassword == null || _context.People == null)
             {
                 return NotFound();
             }
 
             var user = await _context.Users
-                .FirstOrDefaultAsync(m => m.PersonId == userID && m.CodeRecovery == codeRecovery);
+                .FirstOrDefaultAsync(m => m.PersonId == recoveryPassword.UserID && m.CodeRecovery == recoveryPassword.CodeRecovery);
 
 
             if (user == null)
@@ -96,7 +101,7 @@ namespace PetPass_API.Controllers
             }
             else
             {
-                user.Userpassword = newPassword;
+                user.Userpassword = recoveryPassword.newPassword;
                 _context.Entry(user).State = EntityState.Modified;
             }
             try
@@ -117,7 +122,7 @@ namespace PetPass_API.Controllers
         [Route("FindByEmail")]
         public async Task<IActionResult> FindByEmail(string? email)
         {
-            
+            var code = "";
             if (email == null || _context.People == null)
             {
                 return NotFound();
@@ -140,9 +145,9 @@ namespace PetPass_API.Controllers
             }
             else
             {
-                var code = GenerateCodeRecovery();
+                code = GenerateCodeRecovery();
 
-                user.CodeRecovery = code;
+                user.CodeRecovery = GetSha256(code);
                 _context.Entry(user).State = EntityState.Modified;
             }    
 
@@ -154,7 +159,7 @@ namespace PetPass_API.Controllers
             {
                 return BadRequest();
             }
-            SendEmail(email, user.CodeRecovery);
+            SendEmail(email, code);
 
             return Ok(user.PersonId);
         }
@@ -169,6 +174,18 @@ namespace PetPass_API.Controllers
 
             return code;
         }
+
+        private string GetSha256(string str)
+        {
+            SHA256 sha256 = SHA256Managed.Create();
+            ASCIIEncoding encoding = new ASCIIEncoding();
+            byte[] stream = null;
+            StringBuilder sb = new StringBuilder();
+            stream = sha256.ComputeHash(encoding.GetBytes(str));
+            for (int i = 0; i < stream.Length; i++) sb.AppendFormat("{0:x2}", stream[i]);
+            return sb.ToString();
+        }
+
 
         [ApiExplorerSettings(IgnoreApi = true)]
         private void SendEmail(string EmailDestiny, string codeRecovery)

@@ -6,5 +6,6 @@
         public string Token { get; set; }
         public bool FirstLogin { get; set; }
         public char Role { get; set; }
+        public string? Photo { get; set; }
     }
 }

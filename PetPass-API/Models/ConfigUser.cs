@@ -6,12 +6,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PetPass_API.Models;
 
-[Keyless]
 [Table("Config_User")]
 public partial class ConfigUser
 {
+    [Key]
+    [Column("userImageID")]
+    public int UserImageId { get; set; }
+
     [Column("pathImages")]
-    [StringLength(300)]
     [Unicode(false)]
     public string PathImages { get; set; } = null!;
+
+    [Column("personID")]
+    public int PersonId { get; set; }
+
+    [ForeignKey("PersonId")]
+    [InverseProperty("ConfigUsers")]
+    public virtual User? Person { get; set; } = null!;
 }

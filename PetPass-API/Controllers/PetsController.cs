@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PetPass_API.Data;
 using PetPass_API.Models;
+using PetPass_API.Models.Custom;
 using PetPass_API.Services;
 using QRCoder;
 using System;
@@ -70,14 +71,30 @@ namespace PetPass_API.Controllers
                         }
 
                         await _context.Pets.AddAsync((Pet)pet);
+
                         await _context.SaveChangesAsync();
                         await transaction.CommitAsync();
 
                         PetRegisterService petRegister = new PetRegisterService(_context);
                         petRegister.RegisterPet(pet.PetId, pet.UserId);
 
+                        PhotoPetService photo = new PhotoPetService();
+                        var imagesFromFirebase = await photo.SubirImagenesMascota(pet.Images, pet.Name);
+
+                        foreach (var image in imagesFromFirebase)
+                        {
+                            ConfigPet petImages = new ConfigPet
+                            {
+                                PathImages = image,
+                                PetId = pet.PetId
+                            };
+                            await _context.ConfigPets.AddAsync(petImages);
+                        }
+                        await _context.SaveChangesAsync();
+
                         QRCodeService qRCodeService = new QRCodeService();
                         qRCodeService.GenerateAndSendQRCode(pet.PetId, person.Email);
+
                         return CreatedAtAction("Details", new { id = pet.PetId }, pet);
                     }
                     catch
@@ -146,18 +163,15 @@ namespace PetPass_API.Controllers
 
             var pet = await _context.Pets
                 .FirstOrDefaultAsync(p => p.PetId == id);
-            if (pet == null)
-            {
-                return NotFound();
-            }
 
             var person = await _context.People
                 .FirstOrDefaultAsync(p => p.PersonId == pet.PersonId);
 
-            if (person == null)
-            {
-                return NotFound();
-            }
+            var petPhotos = await _context.ConfigPets
+                .Where(p => p.PetId == id)
+                .Select(p => p.PathImages)
+                .ToListAsync();
+
 
             string OwnerName = person.Name + " " + person.FirstName;
 
@@ -170,7 +184,8 @@ namespace PetPass_API.Controllers
                 specie = pet.Specie,
                 breed = pet.Breed,
                 gender = pet.Gender,
-                description = pet.SpecialFeature
+                description = pet.SpecialFeature,
+                photos = petPhotos
             };
             return Ok(dtoPet);
         }

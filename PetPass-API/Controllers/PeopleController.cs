@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
+using System.Text;
 using System.Threading.Tasks;
 using Amazon.S3;
 using Microsoft.AspNetCore.Authorization;
@@ -11,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using PetPass_API.Data;
 using PetPass_API.Models;
 using PetPass_API.Models.Custom;
+using System.Security.Cryptography;
 using PetPass_API.Services;
 
 namespace PetPass_API.Controllers
@@ -74,14 +76,26 @@ namespace PetPass_API.Controllers
 
                         user.PersonId = person.PersonId;
                         user.Username = GenerateUserName(person.Name, person.FirstName, person.Email);
-                        user.Userpassword = GeneratePassword();
+                        string password = GeneratePassword();
+                        user.Userpassword = GetSha256(password);
                         user.Rol = "B";
 
                         await _context.Users.AddAsync(user);
+
+                        PhotoBrigadierService photo = new PhotoBrigadierService();
+                        string imageFromFirebase = await photo.SubirImagen(person.Name, person.FirstName, person.Image);
+                        ConfigUser userImage = new ConfigUser
+                        {
+                            PathImages = imageFromFirebase,
+                            PersonId = person.PersonId
+                        };
+                        await _context.ConfigUsers.AddAsync(userImage);
+
                         await _context.SaveChangesAsync();
                         await transaction.CommitAsync();
 
-                        SendEmail(person.Email, user.Username, user.Userpassword);
+                        SendEmail(person.Email, user.Username, password);
+                        
                         PersonRegisterService personRegister = new PersonRegisterService(_context);
                         personRegister.RegisterPersonRegister(person.PersonId, person.UserID);
 
@@ -113,14 +127,18 @@ namespace PetPass_API.Controllers
 
                         user.PersonId = person.PersonId;
                         user.Username = GenerateUserName(person.Name, person.FirstName, person.Email);
-                        user.Userpassword = GeneratePassword();
+                        string password = GeneratePassword();
+                        user.Userpassword = GetSha256(password);
                         user.Rol = "O";
+                        
                         await _context.Users.AddAsync(user);
                         await _context.SaveChangesAsync();
                         await transaction.CommitAsync();
+                        
                         PersonRegisterService personRegister = new PersonRegisterService(_context);
                         personRegister.RegisterPersonRegister(person.PersonId, person.UserID);
-                        SendEmail(person.Email, user.Username, user.Userpassword);
+                        SendEmail(person.Email, user.Username, password);
+                        
                         return CreatedAtAction("Details", new { id = person.PersonId }, person);
                     }
                     catch
@@ -239,6 +257,18 @@ namespace PetPass_API.Controllers
             }
             return password;
         }
+
+        private string GetSha256(string str)
+        {
+            SHA256 sha256 = SHA256Managed.Create();
+            ASCIIEncoding encoding = new ASCIIEncoding();
+            byte[] stream = null;
+            StringBuilder sb = new StringBuilder();
+            stream = sha256.ComputeHash(encoding.GetBytes(str));
+            for (int i = 0; i < stream.Length; i++) sb.AppendFormat("{0:x2}", stream[i]);
+            return sb.ToString();
+        }
+
 
         [ApiExplorerSettings(IgnoreApi = true)]
         private void SendEmail(string EmailDestiny, string userName, string userPassword)

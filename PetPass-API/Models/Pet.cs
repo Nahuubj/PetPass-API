@@ -55,6 +55,9 @@ public partial class Pet
     [Column("personID")]
     public int PersonId { get; set; }
 
+    [InverseProperty("Pet")]
+    public virtual ICollection<ConfigPet>? ConfigPets { get; set; } = new List<ConfigPet>();
+
     [ForeignKey("PersonId")]
     [InverseProperty("Pets")]
     public virtual Person? Person { get; set; } = null!;

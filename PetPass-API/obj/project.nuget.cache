@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "/xr3lWUluCfiX5pAzyyXJoH3UiBK5YkzzzpJ951k2iTzSAURYiBYXekkuyBnilLXIaZzYk/vOoBCw/+uVkayjw==",
+  "dgSpecHash": "J13p0wPe12wUBJh6fe/Uv8LNUWsM7kFhdPbFu78Ra71s8ARdx24GP/RzmhGJRt3JPJTrVlkbrEPq7Po9xQ2h7w==",
   "success": true,
   "projectFilePath": "C:\\RepositoryLocal\\PetPass-API\\PetPass-API\\PetPass-API.csproj",
   "expectedPackageFiles": [
@@ -9,6 +9,14 @@
     "C:\\Users\\Windows\\.nuget\\packages\\awssdk.s3\\3.7.205.10\\awssdk.s3.3.7.205.10.nupkg.sha512",
     "C:\\Users\\Windows\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\Windows\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
+    "C:\\Users\\Windows\\.nuget\\packages\\firebaseadmin\\2.4.0\\firebaseadmin.2.4.0.nupkg.sha512",
+    "C:\\Users\\Windows\\.nuget\\packages\\firebaseauthentication.net\\3.7.2\\firebaseauthentication.net.3.7.2.nupkg.sha512",
+    "C:\\Users\\Windows\\.nuget\\packages\\firebasestorage.net\\1.0.3\\firebasestorage.net.1.0.3.nupkg.sha512",
+    "C:\\Users\\Windows\\.nuget\\packages\\google.api.gax\\3.2.0\\google.api.gax.3.2.0.nupkg.sha512",
+    "C:\\Users\\Windows\\.nuget\\packages\\google.api.gax.rest\\3.2.0\\google.api.gax.rest.3.2.0.nupkg.sha512",
+    "C:\\Users\\Windows\\.nuget\\packages\\google.apis\\1.49.0\\google.apis.1.49.0.nupkg.sha512",
+    "C:\\Users\\Windows\\.nuget\\packages\\google.apis.auth\\1.49.0\\google.apis.auth.1.49.0.nupkg.sha512",
+    "C:\\Users\\Windows\\.nuget\\packages\\google.apis.core\\1.49.0\\google.apis.core.1.49.0.nupkg.sha512",
     "C:\\Users\\Windows\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\Windows\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Windows\\.nuget\\packages\\humanizer.core.af\\2.14.1\\humanizer.core.af.2.14.1.nupkg.sha512",

@@ -24,9 +24,9 @@ public partial class PetRegister
 
     [ForeignKey("PetId")]
     [InverseProperty("PetRegisters")]
-    public virtual Pet Pet { get; set; } = null!;
+    public virtual Pet? Pet { get; set; } = null!;
 
     [ForeignKey("UserPersonId")]
     [InverseProperty("PetRegisters")]
-    public virtual User UserPerson { get; set; } = null!;
+    public virtual User? UserPerson { get; set; } = null!;
 }

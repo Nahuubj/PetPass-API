@@ -71,8 +71,7 @@ public partial class Person
     [InverseProperty("Person")]
     public virtual User? User { get; set; }
 
-
-    public Person(int personId, string name, string firstName, string lastName, string ci, string gender, string address, int phone, string email, short state)
+    public Person(int personId, string name, string firstName, string? lastName, string ci, string gender, string address, int phone, string email, short state)
     {
         PersonId = personId;
         Name = name;
@@ -85,5 +84,4 @@ public partial class Person
         Email = email;
         State = state;
     }
-
 }

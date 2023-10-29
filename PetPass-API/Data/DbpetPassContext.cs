@@ -48,6 +48,22 @@ public partial class DbPetPassContext : DbContext
                 .HasComment("0 : Inactive\r\n1: Active");
         });
 
+        modelBuilder.Entity<ConfigPet>(entity =>
+        {
+            entity.HasOne(d => d.Pet).WithMany(p => p.ConfigPets)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Config_Pet_Pet1");
+        });
+
+        modelBuilder.Entity<ConfigUser>(entity =>
+        {
+            entity.HasKey(e => e.UserImageId).HasName("PK_Config_User_1");
+
+            entity.HasOne(d => d.Person).WithMany(p => p.ConfigUsers)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Config_User_User");
+        });
+
         modelBuilder.Entity<Patrol>(entity =>
         {
             entity.Property(e => e.PatrolDate).HasDefaultValueSql("(getdate())");

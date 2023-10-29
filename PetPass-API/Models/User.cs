@@ -42,9 +42,11 @@ public partial class User
     public string FirstSessionLogin { get; set; } = null!;
 
     [Column("code_recovery")]
-    [StringLength(50)]
     [Unicode(false)]
     public string? CodeRecovery { get; set; }
+
+    [InverseProperty("Person")]
+    public virtual ICollection<ConfigUser>? ConfigUsers { get; set; } = new List<ConfigUser>();
 
     [InverseProperty("Person")]
     public virtual ICollection<Patrol>? Patrols { get; set; } = new List<Patrol>();
