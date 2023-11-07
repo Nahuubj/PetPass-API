@@ -11,7 +11,6 @@ namespace PetPass_API.Services
         private static readonly string AuthEmail = "petpassdotnet2023@gmail.com";
         private static readonly string AuthPassword = "Petp@ss123*";
 
-
         public async Task<string> SubirImagen(string name, string firstName, string image)
         {
             ImageDTO imageDTO = new ImageDTO

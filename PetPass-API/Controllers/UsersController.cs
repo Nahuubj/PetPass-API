@@ -94,7 +94,6 @@ namespace PetPass_API.Controllers
             var user = await _context.Users
                 .FirstOrDefaultAsync(m => m.PersonId == recoveryPassword.UserID && m.CodeRecovery == recoveryPassword.CodeRecovery);
 
-
             if (user == null)
             {
                 return NotFound();
@@ -145,6 +144,7 @@ namespace PetPass_API.Controllers
             }
             else
             {
+                
                 code = GenerateCodeRecovery();
 
                 user.CodeRecovery = GetSha256(code);
@@ -209,5 +209,6 @@ namespace PetPass_API.Controllers
         }
         #endregion
     }
+
 }
 

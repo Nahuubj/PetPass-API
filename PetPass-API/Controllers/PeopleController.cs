@@ -269,7 +269,6 @@ namespace PetPass_API.Controllers
             return sb.ToString();
         }
 
-
         [ApiExplorerSettings(IgnoreApi = true)]
         private void SendEmail(string EmailDestiny, string userName, string userPassword)
         {
