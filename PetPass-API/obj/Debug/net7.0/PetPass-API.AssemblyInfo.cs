@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PetPass-API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+92e0fb1c81a2ecb449e461393606ce0037f8bdd2")]
 [assembly: System.Reflection.AssemblyProductAttribute("PetPass-API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PetPass-API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

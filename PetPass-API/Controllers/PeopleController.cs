@@ -58,7 +58,7 @@ namespace PetPass_API.Controllers
             return Ok(person);
         }
 
-    // POST: api/People
+        // POST: api/People
         [Authorize]
         [HttpPost]
         [Route("CreateBrigadier")]

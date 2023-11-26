@@ -7,6 +7,7 @@ using PetPass_API.Models.Custom;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using PetPass_API.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace PetPass_API.Services
 {
@@ -37,10 +38,10 @@ namespace PetPass_API.Services
             if (userFinded.Rol == "B")
             {
                 // Obtén la ruta de la imagen desde la base de datos
-                photo = _context.ConfigUsers
+                photo = await _context.ConfigUsers
                     .Where(x => x.PersonId == userFinded.PersonId)
                     .Select(x => x.PathImages)
-                    .FirstOrDefault();
+                    .FirstOrDefaultAsync();
             }
 
             string token = GenerateToken(userFinded.PersonId.ToString());

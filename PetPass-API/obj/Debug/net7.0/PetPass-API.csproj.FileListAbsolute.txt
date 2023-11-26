@@ -1292,3 +1292,4 @@ C:\RepositoryLocal\PetPass-API\PetPass-API\bin\Debug\net7.0\Google.Apis.dll
 C:\RepositoryLocal\PetPass-API\PetPass-API\bin\Debug\net7.0\Google.Apis.Auth.PlatformServices.dll
 C:\RepositoryLocal\PetPass-API\PetPass-API\bin\Debug\net7.0\Google.Apis.Auth.dll
 C:\RepositoryLocal\PetPass-API\PetPass-API\bin\Debug\net7.0\Google.Apis.Core.dll
+C:\RepositoryLocal\PetPass-API\PetPass-API\obj\Debug\net7.0\PetPass-API.sourcelink.json
