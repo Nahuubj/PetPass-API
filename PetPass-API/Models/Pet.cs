@@ -55,6 +55,9 @@ public partial class Pet
     [Column("personID")]
     public int PersonId { get; set; }
 
+    [InverseProperty("Pet")]
+    public virtual ICollection<ConfigPet>? ConfigPets { get; set; } = new List<ConfigPet>();
+
     [ForeignKey("PersonId")]
     [InverseProperty("Pets")]
     public virtual Person? Person { get; set; } = null!;
@@ -62,6 +65,16 @@ public partial class Pet
     [InverseProperty("Pet")]
     public virtual ICollection<PetRegister>? PetRegisters { get; set; } = new List<PetRegister>();
 
-    [InverseProperty("Pet")]
-    public virtual ICollection<PetVaccine>? PetVaccines { get; set; } = new List<PetVaccine>();
+    public Pet(int petId, string name, string specie, string breed, string gender, DateTime birthDate, string specialFeature, short state, int personId)
+    {
+        PetId = petId;
+        Name = name;
+        Specie = specie;
+        Breed = breed;
+        Gender = gender;
+        BirthDate = birthDate;
+        SpecialFeature = specialFeature;
+        State = state;
+        PersonId = personId;
+    }
 }

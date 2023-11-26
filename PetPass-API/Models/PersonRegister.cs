@@ -24,9 +24,9 @@ public partial class PersonRegister
 
     [ForeignKey("PersonId")]
     [InverseProperty("PersonRegisters")]
-    public virtual Person Person { get; set; } = null!;
+    public virtual Person? Person { get; set; } = null!;
 
     [ForeignKey("UserPersonId")]
     [InverseProperty("PersonRegisters")]
-    public virtual User UserPerson { get; set; } = null!;
+    public virtual User? UserPerson { get; set; } = null!;
 }

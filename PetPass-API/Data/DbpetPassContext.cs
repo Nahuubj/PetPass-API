@@ -5,13 +5,13 @@ using PetPass_API.Models;
 
 namespace PetPass_API.Data;
 
-public partial class DbpetPassContext : DbContext
+public partial class DbPetPassContext : DbContext
 {
-    public DbpetPassContext()
+    public DbPetPassContext()
     {
     }
 
-    public DbpetPassContext(DbContextOptions<DbpetPassContext> options)
+    public DbPetPassContext(DbContextOptions<DbPetPassContext> options)
         : base(options)
     {
     }
@@ -32,17 +32,36 @@ public partial class DbpetPassContext : DbContext
 
     public virtual DbSet<PetRegister> PetRegisters { get; set; }
 
-    public virtual DbSet<PetVaccine> PetVaccines { get; set; }
-
     public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<Zone> Zones { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        => optionsBuilder.UseSqlServer();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Campaign>(entity =>
         {
-            entity.Property(e => e.CampaignId).ValueGeneratedNever();
+            entity.Property(e => e.State)
+                .HasComputedColumnSql("(case when [EndDate]<getdate() then CONVERT([bit],(0)) else CONVERT([bit],(1)) end)", false)
+                .HasComment("0 : Inactive\r\n1: Active");
+        });
+
+        modelBuilder.Entity<ConfigPet>(entity =>
+        {
+            entity.HasOne(d => d.Pet).WithMany(p => p.ConfigPets)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Config_Pet_Pet1");
+        });
+
+        modelBuilder.Entity<ConfigUser>(entity =>
+        {
+            entity.HasKey(e => e.UserImageId).HasName("PK_Config_User_1");
+
+            entity.HasOne(d => d.Person).WithMany(p => p.ConfigUsers)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Config_User_User");
         });
 
         modelBuilder.Entity<Patrol>(entity =>
@@ -110,17 +129,6 @@ public partial class DbpetPassContext : DbContext
             entity.HasOne(d => d.UserPerson).WithMany(p => p.PetRegisters)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Pet_Register_User");
-        });
-
-        modelBuilder.Entity<PetVaccine>(entity =>
-        {
-            entity.HasOne(d => d.Campaign).WithMany(p => p.PetVaccines)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PetVaccine_Campaign");
-
-            entity.HasOne(d => d.Pet).WithMany(p => p.PetVaccines)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PetVaccine_Pet");
         });
 
         modelBuilder.Entity<User>(entity =>

@@ -2,12 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
+using System.Text;
 using System.Threading.Tasks;
+using Amazon.S3;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PetPass_API.Data;
 using PetPass_API.Models;
+using PetPass_API.Models.Custom;
+using System.Security.Cryptography;
+using PetPass_API.Services;
 
 namespace PetPass_API.Controllers
 {
@@ -15,14 +21,17 @@ namespace PetPass_API.Controllers
     [ApiController]
     public class PeopleController : ControllerBase
     {
-        private readonly DbpetPassContext _context;
+        private readonly DbPetPassContext _context;
 
-        public PeopleController(DbpetPassContext context) 
+        public PeopleController(DbPetPassContext context)
+
         {
             _context = context;
+
         }
 
         // GET: People
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -30,6 +39,7 @@ namespace PetPass_API.Controllers
         }
 
         // GET: People/Details/5
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> Details(int? id)
         {
@@ -49,9 +59,10 @@ namespace PetPass_API.Controllers
         }
 
         // POST: api/People
+        [Authorize]
         [HttpPost]
         [Route("CreateBrigadier")]
-        public async Task<ActionResult<Person>> CreateBrigadier(Person person)
+        public async Task<ActionResult<Person>> CreateBrigadier(PersonCreated person)
         {
             if (person != null)
             {
@@ -60,18 +71,34 @@ namespace PetPass_API.Controllers
                 {
                     try
                     {
-                        await _context.People.AddAsync(person);
+                        await _context.People.AddAsync((Person)person);
                         await _context.SaveChangesAsync();
 
                         user.PersonId = person.PersonId;
                         user.Username = GenerateUserName(person.Name, person.FirstName, person.Email);
-                        user.Userpassword = GeneratePassword();
+                        string password = GeneratePassword();
+                        user.Userpassword = GetSha256(password);
                         user.Rol = "B";
-                        await _context.Users.AddAsync(user);
-                        await _context.SaveChangesAsync();
 
+                        await _context.Users.AddAsync(user);
+
+                        PhotoBrigadierService photo = new PhotoBrigadierService();
+                        string imageFromFirebase = await photo.SubirImagen(person.Name, person.FirstName, person.Image);
+                        ConfigUser userImage = new ConfigUser
+                        {
+                            PathImages = imageFromFirebase,
+                            PersonId = person.PersonId
+                        };
+                        await _context.ConfigUsers.AddAsync(userImage);
+
+                        await _context.SaveChangesAsync();
                         await transaction.CommitAsync();
-                        SendEmail(person.Email, user.Username, user.Userpassword);
+
+                        SendEmail(person.Email, user.Username, password);
+                        
+                        PersonRegisterService personRegister = new PersonRegisterService(_context);
+                        personRegister.RegisterPersonRegister(person.PersonId, person.UserID);
+
                         return CreatedAtAction("Details", new { id = person.PersonId }, person);
                     }
                     catch
@@ -83,9 +110,10 @@ namespace PetPass_API.Controllers
             return BadRequest();
         }
 
+        [Authorize]
         [HttpPost]
         [Route("CreateOwner")]
-        public async Task<ActionResult<Person>> CreateOwner(Person person)
+        public async Task<ActionResult<Person>> CreateOwner(PersonCreated person)
         {
             if (person != null)
             {
@@ -99,13 +127,18 @@ namespace PetPass_API.Controllers
 
                         user.PersonId = person.PersonId;
                         user.Username = GenerateUserName(person.Name, person.FirstName, person.Email);
-                        user.Userpassword = GeneratePassword();
+                        string password = GeneratePassword();
+                        user.Userpassword = GetSha256(password);
                         user.Rol = "O";
+                        
                         await _context.Users.AddAsync(user);
                         await _context.SaveChangesAsync();
-                        //MANEJAR SESIONES, PARA RELLENAR PERSON_REGISTER
                         await transaction.CommitAsync();
-                        SendEmail(person.Email, user.Username, user.Userpassword);
+                        
+                        PersonRegisterService personRegister = new PersonRegisterService(_context);
+                        personRegister.RegisterPersonRegister(person.PersonId, person.UserID);
+                        SendEmail(person.Email, user.Username, password);
+                        
                         return CreatedAtAction("Details", new { id = person.PersonId }, person);
                     }
                     catch
@@ -119,6 +152,7 @@ namespace PetPass_API.Controllers
 
         // PUT: api/People/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPut]
         [Route("UpdatePerson")]
         public async Task<IActionResult> PutPerson(Person person)
@@ -144,7 +178,25 @@ namespace PetPass_API.Controllers
             return NoContent();
         }
 
+        [Authorize]
+        [HttpGet]
+        [Route("FindByCI")]
+        public async Task<IActionResult> FindByCI(string? ci)
+        {
+
+            if (ci == null || _context.People == null)
+            {
+                return NotFound();
+            }
+
+            var person = await _context.People
+                .FirstOrDefaultAsync(m => m.Ci == ci);
+
+            return Ok(person);
+        }
+
         // POST: People/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [Route("DeletePerson")]
         public async Task<IActionResult> DeletePerson(int id)
@@ -172,7 +224,7 @@ namespace PetPass_API.Controllers
         #region Create User
 
         [ApiExplorerSettings(IgnoreApi = true)]
-        public string GenerateUserName(string name, string lastName, string email)
+        private string GenerateUserName(string name, string lastName, string email)
         {
             string characters = "0123456789";
             string newName = name.Substring(0, 1).ToLower();
@@ -192,7 +244,7 @@ namespace PetPass_API.Controllers
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
-        public string GeneratePassword()
+        private string GeneratePassword()
         {
             string characters = @"ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz0123456789_-.@*$";
             string password = "";
@@ -206,11 +258,22 @@ namespace PetPass_API.Controllers
             return password;
         }
 
+        private string GetSha256(string str)
+        {
+            SHA256 sha256 = SHA256Managed.Create();
+            ASCIIEncoding encoding = new ASCIIEncoding();
+            byte[] stream = null;
+            StringBuilder sb = new StringBuilder();
+            stream = sha256.ComputeHash(encoding.GetBytes(str));
+            for (int i = 0; i < stream.Length; i++) sb.AppendFormat("{0:x2}", stream[i]);
+            return sb.ToString();
+        }
+
         [ApiExplorerSettings(IgnoreApi = true)]
-        public void SendEmail(string EmailDestiny, string userName, string userPassword)
+        private void SendEmail(string EmailDestiny, string userName, string userPassword)
         {
             string EmailOrigin = "nahuel.gutierrez.vargas17@gmail.com";
-            string password = "bdzqnmwcnemhbqub\r\n";
+            string password = "pbek lzxr uxvd byux\r\n";
 
             MailMessage mailMessage = new MailMessage(EmailOrigin, EmailDestiny, "Bienvenido a PetPass!",
                 "<p>Nombre de Usuario: </p><br />" + 
@@ -230,7 +293,6 @@ namespace PetPass_API.Controllers
         }
 
         #endregion
-
     }
 }
 

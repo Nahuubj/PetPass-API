@@ -19,7 +19,6 @@ public partial class User
     public string Username { get; set; } = null!;
 
     [Column("userpassword")]
-    [StringLength(50)]
     [Unicode(false)]
     public string Userpassword { get; set; } = null!;
 
@@ -42,12 +41,19 @@ public partial class User
     [Unicode(false)]
     public string FirstSessionLogin { get; set; } = null!;
 
+    [Column("code_recovery")]
+    [Unicode(false)]
+    public string? CodeRecovery { get; set; }
+
+    [InverseProperty("Person")]
+    public virtual ICollection<ConfigUser>? ConfigUsers { get; set; } = new List<ConfigUser>();
+
     [InverseProperty("Person")]
     public virtual ICollection<Patrol>? Patrols { get; set; } = new List<Patrol>();
 
     [ForeignKey("PersonId")]
     [InverseProperty("User")]
-    public virtual Person Person { get; set; } = null!;
+    public virtual Person? Person { get; set; } = null!;
 
     [InverseProperty("UserPerson")]
     public virtual ICollection<PersonRegister>? PersonRegisters { get; set; } = new List<PersonRegister>();
