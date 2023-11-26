@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
     "C:\\RepositoryLocal\\PetPass-API\\PetPass-API\\PetPass-API.csproj": {}
   },
   "projects": {
@@ -12,6 +13,19 @@
         "projectPath": "C:\\RepositoryLocal\\PetPass-API\\PetPass-API\\PetPass-API.csproj",
         "packagesPath": "C:\\Users\\Windows\\.nuget\\packages\\",
         "outputPath": "C:\\RepositoryLocal\\PetPass-API\\PetPass-API\\obj\\",
+=======
+    "D:\\PetPass-API\\PetPass-API\\PetPass-API.csproj": {}
+  },
+  "projects": {
+    "D:\\PetPass-API\\PetPass-API\\PetPass-API.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\PetPass-API\\PetPass-API\\PetPass-API.csproj",
+        "projectName": "PetPass-API",
+        "projectPath": "D:\\PetPass-API\\PetPass-API\\PetPass-API.csproj",
+        "packagesPath": "C:\\Users\\Windows\\.nuget\\packages\\",
+        "outputPath": "D:\\PetPass-API\\PetPass-API\\obj\\",
+>>>>>>> 582ca7003260e4c8893322c475ba6d3f01d3380a
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
