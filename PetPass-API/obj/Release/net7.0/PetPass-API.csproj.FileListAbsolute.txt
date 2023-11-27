@@ -268,3 +268,4 @@ C:\RepositoryLocal\PetPass-API\PetPass-API\obj\Release\net7.0\refint\PetPass-API
 C:\RepositoryLocal\PetPass-API\PetPass-API\obj\Release\net7.0\PetPass-API.pdb
 C:\RepositoryLocal\PetPass-API\PetPass-API\obj\Release\net7.0\PetPass-API.genruntimeconfig.cache
 C:\RepositoryLocal\PetPass-API\PetPass-API\obj\Release\net7.0\ref\PetPass-API.dll
+C:\RepositoryLocal\PetPass-API\PetPass-API\obj\Release\net7.0\PetPass-API.sourcelink.json
