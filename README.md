@@ -23,9 +23,9 @@ Roles / integrantes
 
       	Fernando Santos Davalos Lovera – Git Master/Developer 
 
-Elias Nahuel Gutierrez Vargas – Team Leader/Developer 
+       Elias Nahuel Gutierrez Vargas – Team Leader/Developer 
 
-Diego Adrian Ricaldez Aguilar - DB-Architect/Developer 
+       Diego Adrian Ricaldez Aguilar - DB-Architect/Developer 
 
  
 
