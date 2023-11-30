@@ -376,3 +376,23 @@ https://youtube.com/playlist?list=PLTVK2lirpnSjv-Ieoxj_F35ECC_J1L9ax
 https://youtube.com/playlist?list=PLA6V-IrRGAMjpeCI8aKxD8zO4d_yubG_j 
 
 https://youtu.be/nlZSLPf22vI?si=0ibJNGEmVpjIJiNh 
+
+
+ENTREGA FINAL
+    
+
+
+	Figma - https://www.figma.com/file/4OfBEctmK2qXo8pxlUTtBt/CARNETIZACION---Mockups-v1?type=design&node-id=0%3A1&mode=design&t=euxBT8ZpR1hy3VnK-1
+	Linear - https://linear.app/prib-carnetizacion/team/PRI/projects/all
+	Github API - https://github.com/Nahuubj/PetPass-API.git
+	Github APP - https://github.com/davalos31/PRI-CARNETIZACION23.git
+	Docker enviado por Elias Nahuel Gutierrez Vargas (Team Leader) - https://hub.docker.com/repository/docker/nahuubj/petpassdockerizado10/general
+	Apk se encuentra en Archivos
+	Carpeta de QA subida en Archivos
+	Video Tecnico YT - https://youtu.be/pQzP5ZMMd9U
+	Video Practico YT - https://youtu.be/Kf68ZYY21Rs
+
+
+
+ 
+
